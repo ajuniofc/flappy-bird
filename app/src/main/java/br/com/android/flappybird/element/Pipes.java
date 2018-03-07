@@ -18,9 +18,11 @@ public class Pipes {
     public static final int PIPES_SIZE = 5;
     private final List<Pipe> pipes;
     private CanvasGame canvasGame;
+    private Score score;
 
-    public Pipes(CanvasGame canvasGame) {
+    public Pipes(CanvasGame canvasGame, Score score) {
         this.canvasGame = canvasGame;
+        this.score = score;
         this.pipes = new ArrayList<>();
         createPipes();
     }
@@ -45,6 +47,7 @@ public class Pipes {
             Pipe pipe = iterator.next();
             pipe.move();
             if (pipe.leftScreen()){
+                score.score();
                 iterator.remove();
                 iterator.add(new Pipe(this.canvasGame, getLastPosition() + DISTANCE_BETWEEN_PIPES));
             }
