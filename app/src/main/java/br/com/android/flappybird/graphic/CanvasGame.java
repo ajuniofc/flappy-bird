@@ -23,4 +23,8 @@ public class CanvasGame {
     public int getHeight(){
         return metrics.heightPixels;
     }
+
+    public int getWidth(){
+        return metrics.widthPixels;
+    }
 }

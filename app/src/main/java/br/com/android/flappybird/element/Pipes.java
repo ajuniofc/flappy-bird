@@ -14,7 +14,7 @@ import br.com.android.flappybird.graphic.CanvasGame;
 
 public class Pipes {
 
-    public static final int DISTANCE_BETWEEN_PIPES = 400;
+    public static final int DISTANCE_BETWEEN_PIPES = 600;
     public static final int PIPES_SIZE = 5;
     private final List<Pipe> pipes;
     private CanvasGame canvasGame;
@@ -60,5 +60,14 @@ public class Pipes {
             max = Math.max(pipe.getPosition(), max);
         }
         return max;
+    }
+
+    public boolean hasCrash(Bird bird) {
+        for (Pipe pipe : this.pipes) {
+            if (pipe.hasCrash(bird)){
+                return true;
+            }
+        }
+        return false;
     }
 }

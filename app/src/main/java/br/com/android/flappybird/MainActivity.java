@@ -10,6 +10,7 @@ import br.com.android.flappybird.engine.Game;
 public class MainActivity extends Activity {
     private Game mGame;
     private FrameLayout mContainer;
+    private Thread threadGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +18,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         mContainer = findViewById(R.id.main_container);
-        mGame = new Game(this);
+        mGame = new Game(this, this);
         mContainer.addView(mGame);
     }
 
@@ -27,9 +28,10 @@ public class MainActivity extends Activity {
         startGame();
     }
 
-    private void startGame() {
+    public void startGame() {
         mGame.start();
-        new Thread(mGame).start();
+        threadGame = new Thread(mGame);
+        threadGame.start();
     }
 
     @Override

@@ -12,8 +12,8 @@ import br.com.android.flappybird.graphic.Colors;
 
 public class Bird {
 
-    private static final float X = 100;
-    private static final float RADIUS = 50;
+    public static final float X = 100;
+    public static final float RADIUS = 50;
     private static final Paint RED = Colors.getBirdColor();
     private float height;
     private CanvasGame canvasGame;
@@ -47,6 +47,8 @@ public class Bird {
         return this.height - RADIUS > X;
     }
 
-
+    public float getHeight() {
+        return this.height;
+    }
 
 }
