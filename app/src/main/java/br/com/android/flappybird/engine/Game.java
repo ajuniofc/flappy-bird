@@ -12,6 +12,7 @@ import android.view.View;
 import br.com.android.flappybird.R;
 import br.com.android.flappybird.element.Bird;
 import br.com.android.flappybird.element.Pipe;
+import br.com.android.flappybird.element.Pipes;
 import br.com.android.flappybird.graphic.CanvasGame;
 
 /**
@@ -25,7 +26,7 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
     private Bird bird;
     private CanvasGame canvasGame;
     private Bitmap background;
-    private Pipe pipe;
+    private Pipes pipes;
 
     public Game(Context context) {
         super(context);
@@ -37,10 +38,10 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
     }
 
     private void initElements() {
-        bird = new Bird();
+        bird = new Bird(canvasGame);
         Bitmap back = BitmapFactory.decodeResource(getResources(), R.drawable.background);
         background = Bitmap.createScaledBitmap(back, back.getWidth(), canvasGame.getHeight(), false);
-        pipe = new Pipe(canvasGame, 800);
+        pipes = new Pipes(canvasGame);
     }
 
     @Override
@@ -52,8 +53,8 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
             canvas.drawBitmap(background, 0,0, null);
             bird.paint(canvas);
             bird.fall();
-            pipe.paint(canvas);
-            pipe.move();
+            pipes.paint(canvas);
+            pipes.move();
 
 
             holder.unlockCanvasAndPost(canvas);
