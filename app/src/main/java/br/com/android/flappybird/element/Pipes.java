@@ -1,11 +1,13 @@
 package br.com.android.flappybird.element;
 
+import android.content.Context;
 import android.graphics.Canvas;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import br.com.android.flappybird.engine.Sound;
 import br.com.android.flappybird.graphic.CanvasGame;
 
 /**
@@ -19,10 +21,12 @@ public class Pipes {
     private final List<Pipe> pipes;
     private CanvasGame canvasGame;
     private Score score;
+    private Context context;
 
-    public Pipes(CanvasGame canvasGame, Score score) {
+    public Pipes(CanvasGame canvasGame, Score score, Context context) {
         this.canvasGame = canvasGame;
         this.score = score;
+        this.context = context;
         this.pipes = new ArrayList<>();
         createPipes();
     }
@@ -31,7 +35,7 @@ public class Pipes {
         int position = 400;
         for (int i = 0; i < PIPES_SIZE; i++) {
             position += DISTANCE_BETWEEN_PIPES;
-            pipes.add(new Pipe(this.canvasGame, position));
+            pipes.add(new Pipe(this.canvasGame, position, context));
         }
     }
 
@@ -49,7 +53,7 @@ public class Pipes {
             if (pipe.leftScreen()){
                 score.score();
                 iterator.remove();
-                iterator.add(new Pipe(this.canvasGame, getLastPosition() + DISTANCE_BETWEEN_PIPES));
+                iterator.add(new Pipe(this.canvasGame, getLastPosition() + DISTANCE_BETWEEN_PIPES, context));
             }
         }
     }

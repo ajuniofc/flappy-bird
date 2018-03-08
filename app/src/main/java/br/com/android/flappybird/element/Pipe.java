@@ -1,8 +1,12 @@
 package br.com.android.flappybird.element;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import br.com.android.flappybird.R;
 import br.com.android.flappybird.graphic.CanvasGame;
 import br.com.android.flappybird.graphic.Colors;
 
@@ -20,13 +24,19 @@ public class Pipe {
     private int bottomPipeHeight;
     private int topPipeHeight;
     private int position;
+    private Bitmap bottomPipe;
+    private Bitmap topPipe;
 
-    public Pipe(CanvasGame canvas, int position){
+    public Pipe(CanvasGame canvas, int position, Context context){
         this.canvasGame = canvas;
         this.position = position;
         this.bottomPipeHeight = canvasGame.getHeight() - PIPE_HEIGHT;
         this.topPipeHeight = SCREEN_TOP + PIPE_HEIGHT;
         randomHeight = random();
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pipe);
+        this.bottomPipe = Bitmap.createScaledBitmap(bitmap, PIPE_WIDTH, bottomPipeHeight, false);
+        this.topPipe = Bitmap.createScaledBitmap(bitmap, PIPE_WIDTH, topPipeHeight, false);
+
     }
 
     public void paint(Canvas canvas){
@@ -35,10 +45,11 @@ public class Pipe {
     }
 
     private void bottomPipe(Canvas canvas) {
-        canvas.drawRect(position, bottomPipeHeight - randomHeight, position + PIPE_WIDTH, canvasGame.getHeight(), GREEN);
+        canvas.drawBitmap(bottomPipe, position, bottomPipeHeight,null);
     }
     private void topPipe(Canvas canvas) {
-        canvas.drawRect(position, SCREEN_TOP, position + PIPE_WIDTH, topPipeHeight + randomHeight, GREEN);
+        canvas.drawRect(position, SCREEN_TOP, position + PIPE_WIDTH, topPipeHeight, GREEN);
+        canvas.drawBitmap(topPipe, position, 0, null);
     }
 
     public void move(){

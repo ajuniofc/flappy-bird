@@ -34,6 +34,7 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
     private Pipes pipes;
     private Score score;
     private Checker checker;
+    private Sound sound;
 
 
     public Game(Context context, MainActivity activity) {
@@ -41,16 +42,17 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
         this.activity = activity;
         this.context = context;
         canvasGame = new CanvasGame(context);
+        sound = new Sound(context);
         initElements();
         setOnTouchListener(this);
     }
 
     private void initElements() {
-        bird = new Bird(canvasGame);
-        score = new Score();
+        bird = new Bird(canvasGame, context, sound);
+        score = new Score(sound);
         Bitmap back = BitmapFactory.decodeResource(getResources(), R.drawable.background);
         background = Bitmap.createScaledBitmap(back, back.getWidth(), canvasGame.getHeight(), false);
-        pipes = new Pipes(canvasGame, score);
+        pipes = new Pipes(canvasGame, score, context);
         checker = new Checker(bird, pipes);
     }
 
@@ -69,8 +71,9 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
                 score.paint(canvas);
 
                 if (checker.hasCrash()) {
-                    //new GameOver(context, canvasGame).paint(canvas);
-                    //isRunning = false;
+                    sound.playCrash();
+                    new GameOver(context, canvasGame).paint(canvas);
+                    isRunning = false;
                 }
 
 
@@ -89,7 +92,7 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (isRunning) {
-            bird.skip();
+            bird.jump();
         } else {
             activity.recreate();
         }
