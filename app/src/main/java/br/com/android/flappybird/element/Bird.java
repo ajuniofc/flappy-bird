@@ -34,7 +34,6 @@ public class Bird {
     }
 
     public void paint(Canvas canvas){
-        canvas.drawCircle(X, height, RADIUS, RED);
         canvas.drawBitmap(bird, X -RADIUS, height - RADIUS, null);
     }
 

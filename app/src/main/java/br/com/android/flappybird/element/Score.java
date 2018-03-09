@@ -31,7 +31,11 @@ public class Score {
     }
 
     public void score() {
-        sound.playScore();
+        if (scores % 2 == 0){
+            sound.playLife();
+        }else {
+            sound.playScore();
+        }
         scores++;
     }
 }

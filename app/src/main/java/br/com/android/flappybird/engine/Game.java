@@ -9,6 +9,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import java.util.logging.Handler;
+
 import br.com.android.flappybird.MainActivity;
 import br.com.android.flappybird.R;
 import br.com.android.flappybird.element.Bird;
@@ -35,6 +37,7 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
     private Score score;
     private Checker checker;
     private Sound sound;
+    private android.os.Handler handler = new android.os.Handler();
 
 
     public Game(Context context, MainActivity activity) {
@@ -71,14 +74,39 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
                 score.paint(canvas);
 
                 if (checker.hasCrash()) {
+                    enabledTouch(false);
                     sound.playCrash();
                     new GameOver(context, canvasGame).paint(canvas);
                     isRunning = false;
+                    enabledTouch(true);
                 }
 
 
                 holder.unlockCanvasAndPost(canvas);
             }
+    }
+
+    private void enabledTouch(boolean enabled) {
+        if (enabled){
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    enabledTouch();
+                }
+            }, 3400);
+        }else {
+            unabledTouch();
+        }
+
+    }
+
+    private void enabledTouch() {
+        setOnTouchListener(this);
+    }
+
+    private void unabledTouch() {
+        setOnTouchListener(null);
     }
 
     public void start(){

@@ -15,7 +15,7 @@ import br.com.android.flappybird.graphic.Colors;
  */
 
 public class Pipe {
-    private static final int PIPE_HEIGHT = 425;
+    private static final int PIPE_HEIGHT = 400;
     private static final int PIPE_WIDTH = 100;
     private static final Paint GREEN = Colors.getPipeColor();
     public static final int SCREEN_TOP = 0;
