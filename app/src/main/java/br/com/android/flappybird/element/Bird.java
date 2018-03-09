@@ -8,6 +8,7 @@ import android.graphics.Paint;
 
 import br.com.android.flappybird.R;
 import br.com.android.flappybird.engine.Sound;
+import br.com.android.flappybird.engine.Time;
 import br.com.android.flappybird.graphic.CanvasGame;
 import br.com.android.flappybird.graphic.Colors;
 
@@ -17,29 +18,40 @@ import br.com.android.flappybird.graphic.Colors;
 
 public class Bird {
 
+    private static final int JUMP_DISTANCE = 150;
     public static final float X = 100;
     public static final int RADIUS = 50;
-    private static final Paint RED = Colors.getBirdColor();
     private final Bitmap bird;
     private float height;
     private CanvasGame canvasGame;
     private Sound sound;
+    private Time time;
 
-    public Bird(CanvasGame canvasGame, Context context, Sound sound) {
+    public Bird(CanvasGame canvasGame, Context context, Sound sound, Time time) {
         this.canvasGame = canvasGame;
         this.sound = sound;
         this.height = 100;
+        this.time = time;
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bird);
         this.bird = Bitmap.createScaledBitmap(bitmap, RADIUS * 2, RADIUS * 2, false);
     }
 
     public void paint(Canvas canvas){
-        canvas.drawBitmap(bird, X -RADIUS, height - RADIUS, null);
+        canvas.drawBitmap(bird, X - RADIUS, height - RADIUS, null);
     }
 
     public void fall(){
-        if (!isTouchingBottom())
-        height += 5;
+        double time = this.time.current();
+        double newHeight = ((10 * (time * time)) / 2.0);
+
+        if (!isTouchingBottom()) {
+            this.height += newHeight;
+        }
+    }
+
+    private double getNewHeight() {
+        double time = this.time.current();
+        return 	-JUMP_DISTANCE + ((10 * (time * time))	/ 2);
     }
 
     private boolean isTouchingBottom() {
@@ -49,12 +61,13 @@ public class Bird {
     public void jump(){
         if (isAbleToJump()){
             sound.playJump();
-            height -= 150;
+            time.restart();
+            this.height -= 150;
         }
     }
 
     private boolean isAbleToJump() {
-        return this.height - RADIUS > X;
+        return this.height > X;
     }
 
     public float getHeight() {

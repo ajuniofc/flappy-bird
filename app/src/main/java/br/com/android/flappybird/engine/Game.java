@@ -9,13 +9,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import java.util.logging.Handler;
 
-import br.com.android.flappybird.MainActivity;
+import br.com.android.flappybird.GameActivity;
 import br.com.android.flappybird.R;
 import br.com.android.flappybird.element.Bird;
 import br.com.android.flappybird.element.GameOver;
-import br.com.android.flappybird.element.Pipe;
 import br.com.android.flappybird.element.Pipes;
 import br.com.android.flappybird.element.Score;
 import br.com.android.flappybird.graphic.CanvasGame;
@@ -31,16 +29,17 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
     private Bird bird;
     private CanvasGame canvasGame;
     private Context context;
-    private MainActivity activity;
+    private GameActivity activity;
     private Bitmap background;
     private Pipes pipes;
     private Score score;
     private Checker checker;
     private Sound sound;
     private android.os.Handler handler = new android.os.Handler();
+    private Time time;
 
 
-    public Game(Context context, MainActivity activity) {
+    public Game(Context context, GameActivity activity) {
         super(context);
         this.activity = activity;
         this.context = context;
@@ -51,7 +50,8 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
     }
 
     private void initElements() {
-        bird = new Bird(canvasGame, context, sound);
+        time = new Time();
+        bird = new Bird(canvasGame, context, sound, time);
         score = new Score(sound);
         Bitmap back = BitmapFactory.decodeResource(getResources(), R.drawable.background);
         background = Bitmap.createScaledBitmap(back, back.getWidth(), canvasGame.getHeight(), false);
@@ -64,7 +64,7 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
             while (isRunning) {
                 if (!holder.getSurface().isValid()) continue;
                 Canvas canvas = holder.lockCanvas();
-
+                time.incrementTime();
                 canvas.drawBitmap(background, 0, 0, null);
                 bird.paint(canvas);
                 bird.fall();

@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 
 import br.com.android.flappybird.engine.Game;
 
-public class MainActivity extends Activity {
+public class GameActivity extends Activity {
     private Game mGame;
     private FrameLayout mContainer;
     private Thread threadGame;
